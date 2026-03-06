@@ -3,12 +3,15 @@
 import sqlite3
 from contextlib import contextmanager
 from typing import List, Dict, Any
-
+import os
 
 @contextmanager
 def get_db():
     """Context manager for database connections"""
-    conn = sqlite3.connect("todo.db")
+    # set to /data/sqlite/test-todo/ in prod
+    DB_PATH = os.getenv("SQLITE_PATH", "todo.db")
+    conn = sqlite3.connect(DB_PATH)
+
     conn.row_factory = sqlite3.Row
     try:
         yield conn
